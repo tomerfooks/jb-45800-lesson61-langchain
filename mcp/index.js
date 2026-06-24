@@ -7,28 +7,28 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
-server.registerTool({
-    
-  description: "Get the current weather for a given location.",
-  inputSchema: z.object({
-    location: z.string(),
-  }),
-  outputSchema: z.object({
-    temperature: z.number(),
-    condition: z.string(),
-  }),
-
-  handler: async (input) => {
-    // Simulate fetching weather data
+server.registerTool(
+  "get-weather",
+  {
+    title: "Get Weather",
+    description: "Get the current weather for a given location.",
+    inputSchema: z.object({
+      location: z.string(),
+    }),
+    outputSchema: z.object({
+      temperature: z.number(),
+      condition: z.string(),
+    }),
+  },
+  async (input) => {
     return {
       temperature: 25,
       condition: "Sunny",
     };
   },
-
-});
+);
 
 const transport = new StdioServerTransport();
-server.start(transport).then(() => {
+server.connect(transport).then(() => {
   console.log("MCP server started on stdio transport.");
 });
