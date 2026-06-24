@@ -2,7 +2,9 @@ import "dotenv/config";
 import express from "express";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
+
 import getWeather from "./tools/getWeather.js";
+import getProducts from "./tools/getProducts.js";
 
 const app = express();
 app.use(express.json());
@@ -18,7 +20,7 @@ const model = new ChatOpenAI({
 
 const agent = createReactAgent({
   llm: model,
-  tools: [getWeather],
+  tools: [getWeather, getProducts],
 });
 
 app.post("/ask", async (req, res) => {
@@ -40,7 +42,6 @@ app.post("/ask", async (req, res) => {
   try {
     const messages = result.messages;
     const last = messages[messages.length - 1];
-
     res.json({ answer: last?.content });
   } catch (err) {
     res.status(504).json({ error: `Agent failed.` });
