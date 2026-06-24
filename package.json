@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc -w",
+    "dev": "nodemon --watch dist --exec node dist/index.js"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.80",
+    "@langchain/langgraph": "^0.2.74",
+    "@langchain/openai": "^0.4.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.2.1",
+    "langchain": "^0.3.37"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
