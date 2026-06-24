@@ -40,12 +40,8 @@ app.post("/ask", async (req, res) => {
   try {
     const messages = result.messages;
     const last = messages[messages.length - 1];
-    const answer = !last
-      ? "No response from agent."
-      : typeof last.content === "string"
-        ? last.content
-        : JSON.stringify(last.content);
-    res.json({ answer });
+
+    res.json({ answer: last?.content });
   } catch (err) {
     res.status(504).json({ error: `Agent failed.` });
   }
