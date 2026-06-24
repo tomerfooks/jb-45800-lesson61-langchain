@@ -15,15 +15,13 @@ server.registerTool(
     inputSchema: z.object({
       location: z.string(),
     }),
-    outputSchema: z.object({
-      temperature: z.number(),
-      condition: z.string(),
-    }),
   },
   async (input) => {
+    const weather = { temperature: 25, condition: "מעולה" };
     return {
-      temperature: 25,
-      condition: "Sunny",
+      content: [
+        { type: "text", text: JSON.stringify(weather) },
+      ],
     };
   },
 );

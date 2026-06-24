@@ -3,9 +3,10 @@ import express from "express";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 
-import getWeather from "./tools/getWeather.js";
 import getProducts from "./tools/getProducts.js";
 import getPosts from "./tools/getPosts.js";
+
+import loadMcpTools from "./src/loadMcpTools.js";
 
 const app = express();
 app.use(express.json());
@@ -19,9 +20,12 @@ const model = new ChatOpenAI({
   configuration: { baseURL: process.env.LLM_BASE_URL },
 });
 
+// Load additional tools from the MCP (Modular Chat Platform)
+const mcpTools = await loadMcpTools();
+
 const agent = createReactAgent({
   llm: model,
-  tools: [getWeather, getProducts, getPosts],
+  tools: [getProducts, getPosts, ...mcpTools],
 });
 
 app.post("/ask", async (req, res) => {
