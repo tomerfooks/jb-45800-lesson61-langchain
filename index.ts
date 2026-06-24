@@ -5,6 +5,7 @@ import { ChatOpenAI } from "@langchain/openai";
 
 import getWeather from "./tools/getWeather.js";
 import getProducts from "./tools/getProducts.js";
+import getPosts from "./tools/getPosts.js";
 
 const app = express();
 app.use(express.json());
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(express.static("frontend"));
 
 const model = new ChatOpenAI({
-  model: process.env.LLM_MODEL ?? "gpt-4o-mini",
+  model: process.env.LLM_MODEL ?? "gpt-5.4-mini",
   temperature: 0,
   apiKey: process.env.LLM_API_KEY ?? "",
   configuration: { baseURL: process.env.LLM_BASE_URL },
@@ -20,7 +21,7 @@ const model = new ChatOpenAI({
 
 const agent = createReactAgent({
   llm: model,
-  tools: [getWeather, getProducts],
+  tools: [getWeather, getProducts, getPosts],
 });
 
 app.post("/ask", async (req, res) => {
