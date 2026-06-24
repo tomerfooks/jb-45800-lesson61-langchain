@@ -38,8 +38,14 @@ app.post("/ask", async (req, res) => {
     { signal: controller.signal },
   );
   try {
-    const answer = (await (result as any).text?.()) ?? JSON.stringify(result);
-    res.json(answer.messages);
+    const messages = result.messages;
+    const last = messages[messages.length - 1];
+    const answer = !last
+      ? "No response from agent."
+      : typeof last.content === "string"
+        ? last.content
+        : JSON.stringify(last.content);
+    res.json({ answer });
   } catch (err) {
     res.status(504).json({ error: `Agent failed.` });
   }
