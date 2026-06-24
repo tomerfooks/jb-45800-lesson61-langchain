@@ -9,9 +9,17 @@ import getPosts from "./tools/getPosts.js";
 import loadMcpTools from "./src/loadMcpTools.js";
 
 const app = express();
-app.use(express.json());
 
+app.use(express.json());
 app.use(express.static("frontend"));
+
+const messages = [
+  {
+    role: "system",
+    content:
+      "You are a helpful assistant that can answer questions about the weather. You always use Emojis!",
+  },
+];
 
 const model = new ChatOpenAI({
   model: process.env.LLM_MODEL ?? "gpt-5.4-mini",
@@ -31,17 +39,10 @@ const agent = createReactAgent({
 app.post("/ask", async (req, res) => {
   const question = req.body?.question;
   const controller = new AbortController();
+  const msg = { role: "user", content: question };
+  messages.push(msg);
   const result = await agent.invoke(
-    {
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a helpful assistant that can answer questions about the weather. You always use Emojis!",
-        },
-        { role: "user", content: question },
-      ],
-    },
+    { messages: messages },
     { signal: controller.signal },
   );
   try {
