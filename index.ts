@@ -39,8 +39,10 @@ const agent = createReactAgent({
 app.post("/ask", async (req, res) => {
   const question = req.body?.question;
   const controller = new AbortController();
+  
   const msg = { role: "user", content: question };
   messages.push(msg);
+
   const result = await agent.invoke(
     { messages: messages },
     { signal: controller.signal },
