@@ -1,110 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Weather Agent</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #f0f2f5;
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-}
-#app {
-  width: 100%;
-  max-width: 640px;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,.08);
-  overflow: hidden;
-  height: 90vh;
-}
-header { padding: 20px 24px 12px; border-bottom: 1px solid #eee; }
-header h1 { font-size: 22px; }
-header p { font-size: 14px; color: #666; margin-top: 2px; }
-#chat {
-  flex: 1; overflow-y: auto; padding: 16px 24px;
-  display: flex; flex-direction: column; gap: 12px;
-}
-.msg {
-  max-width: 80%; padding: 10px 14px; border-radius: 14px;
-  line-height: 1.45; font-size: 15px; white-space: pre-wrap; word-wrap: break-word;
-}
-.msg.user { align-self: flex-end; background: #007aff; color: #fff; border-bottom-right-radius: 4px; }
-.msg.agent { align-self: flex-start; background: #e9eef2; color: #1c1c1e; border-bottom-left-radius: 4px; }
-.msg.error { align-self: flex-start; background: #ffe8e8; color: #c41e3a; }
-.msg.typing { align-self: flex-start; background: #e9eef2; color: #888; font-style: italic; }
-#form {
-  display: flex; gap: 8px; padding: 12px 24px 20px; border-top: 1px solid #eee;
-}
-#input {
-  flex: 1; padding: 10px 14px; border: 1px solid #ddd;
-  border-radius: 24px; font-size: 15px; outline: none;
-}
-#input:focus { border-color: #007aff; }
-#form button {
-  padding: 10px 20px; border: none; border-radius: 24px;
-  background: #007aff; color: #fff; font-size: 15px; cursor: pointer;
-}
-#form button:hover { background: #0066d6; }
-</style>
+:root{--bg:#f5f7fb;--bg2:#eef3fb;--panel:rgba(255,255,255,.78);--panel-border:rgba(15,23,42,.08);--text:#0f172a;--muted:#64748b;--accent:#2563eb;--accent2:#7c3aed;--accentSoft:rgba(37,99,235,.12);--user:linear-gradient(135deg,#2563eb,#7c3aed);--agent:#ffffff;--agentBorder:rgba(148,163,184,.22);--shadow:0 24px 80px rgba(15,23,42,.12);--ring:0 0 0 4px rgba(37,99,235,.14)}*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(37,99,235,.12),transparent 28%),radial-gradient(circle at top right,rgba(124,58,237,.10),transparent 24%),linear-gradient(180deg,var(--bg),var(--bg2));display:grid;place-items:center;padding:24px}#app{width:min(1040px,100%);height:min(92vh,920px);display:grid;grid-template-rows:auto 1fr auto;background:var(--panel);border:1px solid var(--panel-border);border-radius:30px;box-shadow:var(--shadow);backdrop-filter:blur(18px);overflow:hidden}header{padding:26px 28px;border-bottom:1px solid rgba(15,23,42,.08);display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.42))}.brand{display:flex;flex-direction:column;gap:10px}.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}.brand h1{font-size:28px;letter-spacing:-.04em;line-height:1.05}.brand p{color:var(--muted);font-size:14px;max-width:58ch;line-height:1.6}.badge{padding:10px 14px;border-radius:999px;background:var(--accentSoft);color:var(--accent);border:1px solid rgba(37,99,235,.14);font-size:13px;white-space:nowrap;font-weight:600}#chat{overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:14px;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06))}.msg{max-width:min(78%,720px);padding:15px 17px;border-radius:18px;line-height:1.6;font-size:15px;white-space:pre-wrap;word-wrap:break-word;border:1px solid transparent;box-shadow:0 10px 30px rgba(15,23,42,.08)}.msg.user{align-self:flex-end;background:var(--user);color:#fff;border-bottom-right-radius:6px}.msg.agent{align-self:flex-start;background:var(--agent);color:var(--text);border:1px solid var(--agentBorder);border-bottom-left-radius:6px}.msg.error{align-self:flex-start;background:rgba(239,68,68,.10);color:#b91c1c;border:1px solid rgba(239,68,68,.16)}.msg.typing{align-self:flex-start;background:rgba(255,255,255,.72);color:var(--muted);font-style:italic;border:1px solid rgba(148,163,184,.18)}#form{display:flex;gap:12px;padding:18px 24px 24px;border-top:1px solid rgba(15,23,42,.08);background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.72))}#input{flex:1;padding:15px 18px;border:1px solid rgba(148,163,184,.24);border-radius:16px;font-size:15px;outline:none;background:rgba(255,255,255,.92);color:var(--text);transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease}#input::placeholder{color:#94a3b8}#input:focus{border-color:rgba(37,99,235,.45);box-shadow:var(--ring);transform:translateY(-1px)}#form button{padding:14px 20px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s ease,filter .15s ease,box-shadow .15s ease;box-shadow:0 12px 24px rgba(37,99,235,.22)}#form button:hover{transform:translateY(-1px);filter:brightness(1.03)}#form button:active{transform:translateY(0)}#form button:focus-visible,#input:focus-visible{outline:none;box-shadow:var(--ring)}@media (max-width:640px){body{padding:0}#app{height:100vh;border-radius:0}header{padding:18px 16px;flex-direction:column;align-items:flex-start}.brand h1{font-size:24px}#chat{padding:18px 16px}.msg{max-width:94%}#form{padding:14px 16px 16px;flex-direction:column}#form button{width:100%}}</style>
 </head>
 <body>
 <div id="app">
   <header>
-    <h1>🌤️ Weather Agent</h1>
-    <p>Ask about the weather anywhere</p>
+    <div class="brand">
+      <div class="eyebrow">Weather Assistant</div>
+      <h1>🌤️ Weather Agent</h1>
+      <p>Ask about the weather anywhere with a cleaner, brighter, more premium light-mode interface.</p>
+    </div>
+    <div class="badge">Fast replies • Clean UI</div>
   </header>
   <div id="chat" role="log" aria-label="Chat messages"></div>
   <form id="form">
-    <input type="text" id="input" placeholder="e.g. What's the weather in Tokyo?" autofocus>
+    <input type="text" id="input" placeholder="e.g. What's the weather in Tokyo?" autofocus />
     <button type="submit">Send</button>
   </form>
 </div>
 <script>
-const chat = document.getElementById("chat");
-const form = document.getElementById("form");
-const input = document.getElementById("input");
-
-function addMessage(text, role) {
-  const el = document.createElement("div");
-  el.className = "msg " + role;
-  el.textContent = text;
-  chat.appendChild(el);
-  chat.scrollTop = chat.scrollHeight;
-  return el;
-}
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const question = input.value.trim();
-  if (!question) return;
-
-  addMessage(question, "user");
-  input.value = "";
-  const typing = addMessage("…", "typing");
-
-  try {
-    const res = await fetch("/ask", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    });
-    const data = await res.json();
-    typing.remove();
-    if (data.answer) addMessage(data.answer, "agent");
-    else addMessage("No response from agent.", "error");
-  } catch (err) {
-    typing.remove();
-    addMessage("Network error. Is the server running?", "error");
-  }
-});
+const chat=document.getElementById('chat');const form=document.getElementById('form');const input=document.getElementById('input');function addMessage(text,role){const el=document.createElement('div');el.className='msg '+role;el.textContent=text;chat.appendChild(el);chat.scrollTop=chat.scrollHeight;return el}addMessage('Hi! Ask me about the weather in any city.','agent');form.addEventListener('submit',async(e)=>{e.preventDefault();const question=input.value.trim();if(!question)return;addMessage(question,'user');input.value='';const typing=addMessage('Thinking…','typing');try{const res=await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question})});const data=await res.json();typing.remove();if(data.answer)addMessage(data.answer,'agent');else addMessage('No response from agent.','error')}catch(err){typing.remove();addMessage('Network error. Is the server running?','error')}});
 </script>
 </body>
 </html>

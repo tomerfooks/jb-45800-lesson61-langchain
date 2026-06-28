@@ -3,7 +3,6 @@ import express from "express";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 
-import getProducts from "./tools/getProducts.js";
 import runCommand from "./tools/runCommand.js";
 
 import loadMcpTools from "./src/loadMcpTools.js";
