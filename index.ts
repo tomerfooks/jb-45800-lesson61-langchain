@@ -4,7 +4,7 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 
 import getProducts from "./tools/getProducts.js";
-import getPosts from "./tools/getPosts.js";
+import runCommand from "./tools/runCommand.js";
 
 import loadMcpTools from "./src/loadMcpTools.js";
 
@@ -17,7 +17,7 @@ const messages = [
   {
     role: "system",
     content:
-      "You are a helpful assistant that can answer questions about the weather. You always use Emojis!",
+      "אתה העוזר האישי שלי. הכלי העיקרי שלך, הוא היכולת להריץ פקודות. יש לך סקילים skills תחת תיקייה ./skills. ",
   },
 ];
 
@@ -33,7 +33,7 @@ const mcpTools = await loadMcpTools();
 
 const agent = createReactAgent({
   llm: model,
-  tools: [getProducts, getPosts, ...mcpTools],
+  tools: [runCommand, ...mcpTools],
 });
 
 app.post("/ask", async (req, res) => {
